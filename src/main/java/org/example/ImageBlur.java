@@ -13,7 +13,6 @@ import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 public class ImageBlur {
 
@@ -26,18 +25,35 @@ public class ImageBlur {
         byteBuffer.asIntBuffer().put(pixelsInt);
         byte[] pixels = byteBuffer.array();
 
-        processGrayscaleFilter(pixels);
-        //processBlurFilter(pixels);
+        //processGrayscaleFilter(pixels);
+
+        var result = new byte[pixels.length];
+        processBlurFilter(pixels, result, image.getWidth(), image.getHeight());
+        System.arraycopy(result, 0, pixels, 0, pixels.length);
 
         byteBuffer.asIntBuffer().get(pixelsInt);
         writeImage(filenameWithoutExtension + "-blurred.png", image);
     }
 
-    private static void processBlurFilter(int[] pixels) {
-        for (int index = 0; index < pixels.length; index++) {
-            var pixel = new short[]{0, 0, 0, 0};
-            //pixels[index] = ARGB2Int(pixel);
+    private static void processBlurFilter(byte[] pixels, byte[] result, int width, int height) {
+        for (int yDestinationIndex = 1; yDestinationIndex < height-1; yDestinationIndex++) {
+            for (int xDestinationIndex = 1; xDestinationIndex < width-1; xDestinationIndex++) {
+                for (int color = 1; color < 4; color++) {
+                    var sum = 0;
+                    int index = yDestinationIndex + xDestinationIndex + color;
+                    for (int yWindowOffset = -1; yWindowOffset <= 1; yWindowOffset++) {
+                        for (int xWindowOffset = -1; xWindowOffset <= 1; xWindowOffset++) {
+                                sum += Byte.toUnsignedInt(pixels[getLinearIndex(xDestinationIndex+xWindowOffset, yDestinationIndex+yWindowOffset, color, width)]);
+                        }
+                    }
+                    result[getLinearIndex(xDestinationIndex, yDestinationIndex, color, width)] = (byte)(sum/9.0);
+                }
+            }
         }
+    }
+
+    private static int getLinearIndex(int x, int y, int color, int width) {
+        return y*width*4 + x*4 + color;
     }
 
     private static void processGrayscaleFilter(byte[] pixels) {
