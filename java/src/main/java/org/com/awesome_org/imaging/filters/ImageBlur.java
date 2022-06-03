@@ -17,6 +17,7 @@ import java.nio.ByteBuffer;
 public class ImageBlur {
 
     private static JavaAverageBlurFilter blurFilter = new JavaAverageBlurFilter();
+    private static JavaGrayscaleFilter grayscaleFilter = new JavaGrayscaleFilter();
 
     public static void blurImage() {
         var filenameWithoutExtension = "./baboon";
@@ -35,23 +36,12 @@ public class ImageBlur {
         System.arraycopy(result, 0, pixels, 0, pixels.length);
 
         nanoTimeBefore = System.nanoTime();
-        processGrayscaleFilter(pixels);
+        grayscaleFilter.processGrayscaleFilter(pixels);
         processingTime = System.nanoTime() - nanoTimeBefore;
         System.out.println("Grayscale filter took " + processingTime / 1000000.0 + "ms");
 
         byteBuffer.asIntBuffer().get(pixelsInt);
         writeImage(filenameWithoutExtension + "-blurred.png", image);
-    }
-
-    private static void processGrayscaleFilter(byte[] pixels) {
-        for (int index = 0; index < pixels.length; index+=4) {
-            var grayColor = (byte)(0.299 * Byte.toUnsignedInt(pixels[index+1])
-                    + 0.587 * Byte.toUnsignedInt(pixels[index+2])
-                    + 0.114 * Byte.toUnsignedInt(pixels[index+3]));
-            pixels[index+1] = grayColor;
-            pixels[index+2] = grayColor;
-            pixels[index+3] = grayColor;
-        }
     }
 
     private static void writeImage(String path, BufferedImage image) {
