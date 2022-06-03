@@ -1,10 +1,14 @@
 [package]
-name = "jni-test-rust"
+name = "jni-image-filter"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lib]
+crate-type = ["staticlib", "cdylib"]
+
 [dependencies]
+image = "0.24"
 jni = "0.19"
 jni_fn = "0.1"

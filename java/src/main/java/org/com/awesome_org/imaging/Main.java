@@ -1,7 +1,9 @@
 package org.com.awesome_org.imaging;
 
+import org.com.awesome_org.imaging.filters.BlurFilter;
+import org.com.awesome_org.imaging.filters.GrayscaleFilter;
 import org.com.awesome_org.imaging.filters.JavaAverageBlurFilter;
-import org.com.awesome_org.imaging.filters.JavaGrayscaleFilter;
+import org.com.awesome_org.imaging.filters.RustGrayscaleFilter;
 
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
@@ -9,9 +11,10 @@ import java.nio.ByteBuffer;
 
 public class Main {
     public static final String FILENAME_WITHOUT_EXTENSION = "./baboon";
-    private static JavaAverageBlurFilter blurFilter = new JavaAverageBlurFilter();
-    private static JavaGrayscaleFilter grayscaleFilter = new JavaGrayscaleFilter();
+    
+    private static BlurFilter blurFilter = new JavaAverageBlurFilter();
 
+    private static GrayscaleFilter grayscaleFilter = new RustGrayscaleFilter();
 
     public static void main(String... args) {
         var image = ImageIO.readImage(FILENAME_WITHOUT_EXTENSION + ".png");
