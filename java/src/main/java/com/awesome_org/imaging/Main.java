@@ -16,6 +16,10 @@ public class Main {
 
     private static GrayscaleFilter grayscaleFilter = new RustGrayscaleFilter();
 
+    static {
+        System.loadLibrary("jni_image_filter");
+    }
+
     public static void main(String... args) {
         var image = ImageIO.readImage(FILENAME_WITHOUT_EXTENSION + ".png");
         DataBuffer dataBuffer = image.getRaster().getDataBuffer();
