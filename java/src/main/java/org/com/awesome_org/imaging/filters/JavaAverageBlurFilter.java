@@ -19,6 +19,6 @@ public class JavaAverageBlurFilter implements BlurFilter {
     }
 
     private int getLinearIndex(int x, int y, int color, int width) {
-        return y*width*4 + x*4 + color;
+        return y * width * 4 + x * 4 + color;
     }
 }
