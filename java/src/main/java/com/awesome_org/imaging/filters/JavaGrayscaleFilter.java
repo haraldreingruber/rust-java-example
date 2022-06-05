@@ -1,4 +1,4 @@
-package org.com.awesome_org.imaging.filters;
+package com.awesome_org.imaging.filters;
 
 public class JavaGrayscaleFilter implements GrayscaleFilter {
     public void processGrayscaleFilter(byte[] pixels) {

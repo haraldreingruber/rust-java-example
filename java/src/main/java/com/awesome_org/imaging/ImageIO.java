@@ -1,4 +1,4 @@
-package org.com.awesome_org.imaging;
+package com.awesome_org.imaging;
 
 import org.apache.commons.imaging.ImageFormats;
 import org.apache.commons.imaging.ImageReadException;

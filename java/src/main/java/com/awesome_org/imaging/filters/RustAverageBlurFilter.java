@@ -1,4 +1,4 @@
-package org.com.awesome_org.imaging.filters;
+package com.awesome_org.imaging.filters;
 
 public class RustAverageBlurFilter implements BlurFilter {
 
