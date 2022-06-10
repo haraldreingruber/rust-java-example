@@ -13,6 +13,7 @@ public class Main {
     private static final GrayscaleFilter grayscaleFilter = new JavaGrayscaleFilter();
 
     public static void main(String... args) {
+        // loading image
         var image = ImageIO.readImage(BABOON_FILE_NAME + ".png");
         DataBuffer dataBuffer = image.getRaster().getDataBuffer();
         int[] pixelsInt = ((DataBufferInt) dataBuffer).getData();
@@ -20,7 +21,7 @@ public class Main {
         byteBuffer.asIntBuffer().put(pixelsInt);
         byte[] pixels = byteBuffer.array();
 
-  
+        // grayscale filter
         var nanoTimeBefore = System.nanoTime();
 
         grayscaleFilter.processGrayscaleFilter(pixels);
@@ -28,6 +29,7 @@ public class Main {
         var processingTime = System.nanoTime() - nanoTimeBefore;
         System.out.println("Grayscale filter took " + processingTime / 1000000.0 + "ms");
 
+        // saving image
         byteBuffer.asIntBuffer().get(pixelsInt);
         ImageIO.writeImage(BABOON_FILE_NAME + "-blurred.png", image);
     }
