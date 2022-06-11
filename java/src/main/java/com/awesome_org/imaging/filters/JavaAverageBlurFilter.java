@@ -6,7 +6,6 @@ public class JavaAverageBlurFilter implements BlurFilter {
             for (int xDestinationIndex = 1; xDestinationIndex < width - 1; xDestinationIndex++) {
                 for (int color = 1; color < 4; color++) {
                     var sum = 0;
-                    int index = yDestinationIndex + xDestinationIndex + color;
                     for (int yWindowOffset = -1; yWindowOffset <= 1; yWindowOffset++) {
                         for (int xWindowOffset = -1; xWindowOffset <= 1; xWindowOffset++) {
                             sum += Byte.toUnsignedInt(pixels[getLinearIndex(xDestinationIndex + xWindowOffset, yDestinationIndex + yWindowOffset, color, width)]);
