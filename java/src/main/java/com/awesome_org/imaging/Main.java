@@ -29,19 +29,23 @@ public class Main {
         byteBuffer.asIntBuffer().put(pixelsInt);
         byte[] pixels = byteBuffer.array();
 
+        // grayscale filter
+        var nanoTimeBefore = System.nanoTime();
+
+        grayscaleFilter.processGrayscaleFilter(pixels);
+
+        var processingTime = System.nanoTime() - nanoTimeBefore;
+        System.out.println("Grayscale filter took " + processingTime / 1000000.0 + "ms");
+
         // blur filter
         var result = new byte[pixels.length];
-        var nanoTimeBefore = System.nanoTime();
+        nanoTimeBefore = System.nanoTime();
+
         blurFilter.processBlurFilter(pixels, result, image.getWidth(), image.getHeight());
-        var processingTime = System.nanoTime() - nanoTimeBefore;
+
+        processingTime = System.nanoTime() - nanoTimeBefore;
         System.arraycopy(result, 0, pixels, 0, pixels.length);
         System.out.println("Blur filter took " + processingTime / 1000000.0 + "ms");
-
-        // grayscale filter
-        nanoTimeBefore = System.nanoTime();
-        grayscaleFilter.processGrayscaleFilter(pixels);
-        processingTime = System.nanoTime() - nanoTimeBefore;
-        System.out.println("Grayscale filter took " + processingTime / 1000000.0 + "ms");
 
         // saving image
         byteBuffer.asIntBuffer().get(pixelsInt);
