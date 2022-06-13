@@ -1,9 +1,6 @@
 package com.awesome_org.imaging;
 
-import com.awesome_org.imaging.filters.BlurFilter;
-import com.awesome_org.imaging.filters.GrayscaleFilter;
-import com.awesome_org.imaging.filters.RustAverageBlurFilter;
-import com.awesome_org.imaging.filters.RustGrayscaleFilter;
+import com.awesome_org.imaging.filters.*;
 
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
@@ -12,9 +9,15 @@ import java.nio.ByteBuffer;
 public class Main {
     public static final String FILENAME_WITHOUT_EXTENSION = "./baboon";
 
-    private static BlurFilter blurFilter = new RustAverageBlurFilter();
+    private static final GrayscaleFilter javaGrayscaleFilter = new JavaGrayscaleFilter();
+    private static final GrayscaleFilter rustGrayscaleFilter = new RustGrayscaleFilter();
+    private static final GrayscaleFilter grayscaleFilter = rustGrayscaleFilter;
 
-    private static GrayscaleFilter grayscaleFilter = new RustGrayscaleFilter();
+
+    private static final BlurFilter javaBlurFilter = new JavaAverageBlurFilter();
+    private static final BlurFilter rustBlurFilter = new RustAverageBlurFilter();
+    private static final BlurFilter blurFilter = rustBlurFilter;
+
 
     static {
         System.loadLibrary("jni_image_filter");
