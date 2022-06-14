@@ -11,3 +11,7 @@ Priority Queue Examples:
 
 Migrate Java Image Filter to Rust (Live Demo):
 * https://github.com/haraldreingruber/rust-java-example 
+
+# Slides of the talk
+
+[Get the best of both worlds - Integrating Rust with other languages](https://speakerdeck.com/haraldreingruber/get-the-best-of-both-worlds-integrating-rust-into-other-languages)
