@@ -2,12 +2,13 @@ package com.awesome_org.imaging;
 
 import com.awesome_org.imaging.filters.*;
 
+import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
 
 public class Main {
-    public static final String FILENAME_WITHOUT_EXTENSION = "./baboon";
+    public static final String BABOON_FILE_NAME = "./baboon";
 
     private static final GrayscaleFilter javaGrayscaleFilter = new JavaGrayscaleFilter();
     private static final GrayscaleFilter rustGrayscaleFilter = new RustGrayscaleFilter();
@@ -18,19 +19,17 @@ public class Main {
     private static final BlurFilter rustBlurFilter = new RustAverageBlurFilter();
     private static final BlurFilter blurFilter = rustBlurFilter;
 
+    private static BufferedImage image;
+    private static int[] pixelsInt;
+    private static ByteBuffer byteBuffer;
+
 
     static {
         System.loadLibrary("jni_image_filter");
     }
 
     public static void main(String... args) {
-        // loading image
-        var image = ImageIO.readImage(FILENAME_WITHOUT_EXTENSION + ".png");
-        DataBuffer dataBuffer = image.getRaster().getDataBuffer();
-        int[] pixelsInt = ((DataBufferInt) dataBuffer).getData();
-        var byteBuffer = ByteBuffer.allocate(pixelsInt.length * 4);
-        byteBuffer.asIntBuffer().put(pixelsInt);
-        byte[] pixels = byteBuffer.array();
+        byte[] pixels = loadImage(BABOON_FILE_NAME + ".png");
 
         // grayscale filter
         var nanoTimeBefore = System.nanoTime();
@@ -51,7 +50,21 @@ public class Main {
         System.out.println("Blur filter took " + processingTime / 1000000.0 + "ms");
 
         // saving image
+        saveImage(BABOON_FILE_NAME + "-blurred.png");
+    }
+
+    private static byte[] loadImage(String path) {
+        image = ImageIO.readImage(path);
+        DataBuffer dataBuffer = image.getRaster().getDataBuffer();
+        pixelsInt = ((DataBufferInt) dataBuffer).getData();
+        byteBuffer = ByteBuffer.allocate(pixelsInt.length * 4);
+        byteBuffer.asIntBuffer().put(pixelsInt);
+        byte[] pixels = byteBuffer.array();
+        return pixels;
+    }
+
+    private static void saveImage(String path) {
         byteBuffer.asIntBuffer().get(pixelsInt);
-        ImageIO.writeImage(FILENAME_WITHOUT_EXTENSION + "-blurred.png", image);
+        ImageIO.writeImage(path, image);
     }
 }
