@@ -1,6 +1,8 @@
 package com.awesome_org.imaging;
 
+import com.awesome_org.imaging.filters.BlurFilter;
 import com.awesome_org.imaging.filters.GrayscaleFilter;
+import com.awesome_org.imaging.filters.JavaAverageBlurFilter;
 import com.awesome_org.imaging.filters.JavaGrayscaleFilter;
 
 import java.awt.image.BufferedImage;
@@ -13,6 +15,8 @@ public class Main {
 
     private static final GrayscaleFilter grayscaleFilter = new JavaGrayscaleFilter();
 
+    private static final BlurFilter blurFilter = new JavaAverageBlurFilter();
+
     public static void main(String... args) {
         byte[] pixels = loadImage(BABOON_FILE_NAME + ".png");
 
@@ -23,6 +27,16 @@ public class Main {
 
         var processingTime = System.nanoTime() - nanoTimeBefore;
         System.out.println("Grayscale filter took " + processingTime / 1000000.0 + "ms");
+
+        // blur filter
+        var result = new byte[pixels.length];
+        nanoTimeBefore = System.nanoTime();
+
+        blurFilter.processBlurFilter(pixels, result, image.getWidth(), image.getHeight());
+
+        processingTime = System.nanoTime() - nanoTimeBefore;
+        System.arraycopy(result, 0, pixels, 0, pixels.length);
+        System.out.println("Blur filter took " + processingTime / 1000000.0 + "ms");
 
         // saving image
         saveImage(BABOON_FILE_NAME + "-blurred.png");
