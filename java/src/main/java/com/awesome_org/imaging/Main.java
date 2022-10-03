@@ -8,7 +8,7 @@ import java.awt.image.DataBufferInt;
 import java.nio.ByteBuffer;
 
 public class Main {
-    public static final String BABOON_FILE_NAME = "./baboon";
+    public static final String IMAGE_FILE_NAME = "./image";
 
     private static final GrayscaleFilter javaGrayscaleFilter = new JavaGrayscaleFilter();
     private static final GrayscaleFilter rustGrayscaleFilter = new RustGrayscaleFilter();
@@ -29,7 +29,7 @@ public class Main {
     }
 
     public static void main(String... args) {
-        byte[] pixels = loadImage(BABOON_FILE_NAME + ".png");
+        byte[] pixels = loadImage(IMAGE_FILE_NAME + ".png");
 
         // grayscale filter
         var nanoTimeBefore = System.nanoTime();
@@ -38,6 +38,10 @@ public class Main {
 
         var processingTime = System.nanoTime() - nanoTimeBefore;
         System.out.println("Grayscale filter took " + processingTime / 1000000.0 + "ms");
+
+        // saving image
+        saveImage(IMAGE_FILE_NAME + "-grayscale.png");
+        pixels = loadImage(IMAGE_FILE_NAME + ".png");
 
         // blur filter
         var result = new byte[pixels.length];
@@ -50,7 +54,7 @@ public class Main {
         System.out.println("Blur filter took " + processingTime / 1000000.0 + "ms");
 
         // saving image
-        saveImage(BABOON_FILE_NAME + "-blurred.png");
+        saveImage(IMAGE_FILE_NAME + "-blurred.png");
     }
 
     private static byte[] loadImage(String path) {
